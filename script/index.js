@@ -1,5 +1,11 @@
 console.log("Hello github issues");
 
+
+let currentStatus='all';
+
+
+
+
 const loadLessons = () => {
     fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
         .then((res) => res.json())
@@ -15,6 +21,20 @@ const loadLessons = () => {
 }
 
 
+
+// all remove active class
+const removeActive = () => {
+    const lessonButtons = document.querySelectorAll(".lesson-btn");
+    lessonButtons.forEach((btn) => btn.classList.remove("active"));
+};
+
+
+
+
+
+
+
+
 // 2.creating all,open,closed button
 
 const displayFilterButtons = (issues) => {
@@ -24,12 +44,21 @@ const displayFilterButtons = (issues) => {
     const openCount = issues.filter(issue => issue.status === 'open').length;
     const closedCount = issues.filter(issue => issue.status === 'closed').length;
 
+
+    // set id and class 
+
+
     levelContainer.innerHTML = `
-        <div class="flex justify-start mb-6">
-            <div class="join border border-gray-200 bg-white">
-                <button onclick="filterIssues('all')" class="btn join-item btn-primary bg-blue-600 border-none text-white px-8">All</button>
-                <button onclick="filterIssues('open')" class="btn join-item bg-white border-none text-gray-600 hover:bg-gray-50 px-8">Open</button>
-                <button onclick="filterIssues('closed')" class="btn join-item bg-white border-none text-gray-600 hover:bg-gray-50 px-8">Closed</button>
+        <div class="flex justify-start mb-6 ">
+            <div class="join border border-gray-200 bg-white gap-4 rounded-xl">
+                <button id="btn-all" onclick="filterIssues('all')" 
+                    class="btn join-item lesson-btn rounded-2xl ${currentStatus === 'all' ? 'active' : 'bg-white text-gray-600'} px-8">All</button>
+                
+                <button id="btn-open" onclick="filterIssues('open')" 
+                    class="btn join-item lesson-btn rounded-2xl ${currentStatus === 'open' ? 'active' : 'bg-white text-gray-600'} px-8">Open</button>
+                
+                <button id="btn-closed" onclick="filterIssues('closed')" 
+                    class="btn join-item lesson-btn rounded-2xl ${currentStatus === 'closed' ? 'active' : 'bg-white text-gray-600'} px-8">Closed</button>
             </div>
         </div>
 
@@ -60,24 +89,41 @@ const displayFilterButtons = (issues) => {
 }
 
 
+
+
 const filterIssues = (status) => {
+    
+    currentStatus = status;
+
     fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
         .then((res) => res.json())
         .then((json) => {
+            const allData = json.data;
+            
+            // 2.data filtering
+            const filteredData = status === 'all' 
+                ? allData 
+                : allData.filter(issue => issue.status === status);
 
-            const allData=json.data;
-            if (status === 'all') {
+            
+            displayFilterButtons(filteredData);
+            displayLevelWord(filteredData);
 
-                displayFilterButtons(allData);
-                displayLevelWord(allData);
-            } else {
-                const filteredData = allData.filter(issue => issue.status === status);
-                displayFilterButtons(filteredData);
-                displayLevelWord(filteredData);
+            // 3.Active class handling
+            
+            removeActive();
+            const clickedBtn = document.getElementById(`btn-${status}`);
+            if (clickedBtn) {
+                clickedBtn.classList.add("active");
+                
+                
+                if(status !== 'all') {
+                    clickedBtn.classList.remove("bg-white", "text-gray-600");
+                }
             }
-        });
+        })
+        .catch(err => console.error("Error fetching issues:", err));
 }
-
 
 // {
 //   "status": "success",
