@@ -4,39 +4,75 @@ const loadLessons = () => {
     fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
         .then((res) => res.json())
         .then((json) => {
-            displayLesson(json.data);  
+            // displayLesson(json.data);  
+
+            const allData=json.data;
             
-            displayFilterButtons();
+            displayFilterButtons(allData); //rendaring filter and count button
             
-            displayLevelWord(json.data);   // See starting all card
+            displayLevelWord(allData);   // See starting all card
         });
 }
 
 
 // 2.creating all,open,closed button
-const displayFilterButtons = () => {
+
+const displayFilterButtons = (issues) => {
     const levelContainer = document.getElementById("level-container");
+
+    const totalCount = issues.length;
+    const openCount = issues.filter(issue => issue.status === 'open').length;
+    const closedCount = issues.filter(issue => issue.status === 'closed').length;
+
     levelContainer.innerHTML = `
-        <div class="join border border-gray-200">
-            <button onclick="filterIssues('all')" class="btn join-item btn-primary px-8">All</button>
-            <button onclick="filterIssues('open')" class="btn join-item btn-outline btn-success">Open</button>
-            <button onclick="filterIssues('closed')" class="btn join-item btn-outline btn-secondary">Closed</button>
+        <div class="flex justify-start mb-6">
+            <div class="join border border-gray-200 bg-white">
+                <button onclick="filterIssues('all')" class="btn join-item btn-primary bg-blue-600 border-none text-white px-8">All</button>
+                <button onclick="filterIssues('open')" class="btn join-item bg-white border-none text-gray-600 hover:bg-gray-50 px-8">Open</button>
+                <button onclick="filterIssues('closed')" class="btn join-item bg-white border-none text-gray-600 hover:bg-gray-50 px-8">Closed</button>
+            </div>
+        </div>
+
+        <div class="w-full bg-white p-6 rounded-xl shadow-sm border border-gray-100 mb-8 flex justify-between items-center">
+            
+            <div class="flex items-center gap-4">
+                <div class="w-12 h-12 bg-indigo-50 text-indigo-600 rounded-full flex items-center justify-center text-xl shadow-inner">
+                    <i class="fa-solid fa-bahai animate-spin-slow"></i>
+                </div>
+                <div>
+                    <h2 class="text-2xl font-black text-slate-800">${totalCount} Issues</h2>
+                    <p class="text-sm text-slate-400 font-medium">Track and manage your project issues</p>
+                </div>
+            </div>
+
+            <div class="flex gap-6 items-center">
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 bg-green-500 rounded-full shadow-[0_0_8px_rgba(34,197,94,0.5)]"></span>
+                    <span class="text-sm font-bold text-slate-600">Open: ${openCount}</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-3 h-3 bg-purple-500 rounded-full shadow-[0_0_8px_rgba(168,85,247,0.5)]"></span>
+                    <span class="text-sm font-bold text-slate-600">Closed: ${closedCount}</span>
+                </div>
+            </div>
         </div>
     `;
 }
-
-
-
 
 
 const filterIssues = (status) => {
     fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
         .then((res) => res.json())
         .then((json) => {
+
+            const allData=json.data;
             if (status === 'all') {
-                displayLevelWord(json.data);
+
+                displayFilterButtons(allData);
+                displayLevelWord(allData);
             } else {
-                const filteredData = json.data.filter(issue => issue.status === status);
+                const filteredData = allData.filter(issue => issue.status === status);
+                displayFilterButtons(filteredData);
                 displayLevelWord(filteredData);
             }
         });
@@ -90,8 +126,8 @@ const displayLevelWord = (words) => {
 
 
         const isOpen = word.status === "open";
-        const topBorderColor = isOpen ? "border-green-500" : "border-purple-500";
-        const iconColor = isOpen ? "text-green-500" : "text-purple-500";
+        const topBorderColor = isOpen ? "border-green-400" : "border-purple-400";
+        const iconColor = isOpen ? "text-green-400" : "text-purple-400";
         const iconBg = isOpen ? "bg-green-100" : "bg-purple-100";
 
 
