@@ -348,7 +348,37 @@ const displayWordDetails = (word) => {
 }
 
 
+const handleSearch = () => {
+    const searchText = document.getElementById("search-input").value;
+    const loader = document.getElementById("filter-loader");
+    const wordContainer = document.getElementById("word-container");
 
+    if (!searchText) return; 
+
+    
+    const cards = wordContainer.querySelectorAll('div:not(#filter-loader)');
+    cards.forEach(card => card.remove());
+    if (loader) loader.classList.remove("hidden");
+
+    
+    const url = `https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchText}`;
+
+    fetch(url)
+        .then((res) => res.json())
+        .then((json) => {
+            const searchResults = json.data;
+            if (loader) loader.classList.add("hidden");
+
+            
+            displayLevelWord(searchResults);
+            displayFilterButtons(searchResults); 
+        })
+        .catch(err => {
+            console.error("Search Error:", err);
+            if (loader) loader.classList.add("hidden");
+            wordContainer.innerHTML = `<p class="col-span-full text-center py-10">No issues found for "${searchText}"</p>`;
+        });
+}
 
 
 
