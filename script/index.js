@@ -4,25 +4,40 @@ console.log("Hello github issues");
 let currentStatus='all';
 
 
-
-
 const loadLessons = () => {
+    const loader = document.getElementById("filter-loader");
+    const wordContainer = document.getElementById("word-container");
+
+    
+    if(loader) loader.classList.remove("hidden"); // Initialy see loader
+    const cards = wordContainer.querySelectorAll('div:not(#filter-loader)');
+    cards.forEach(card => card.remove());
+
     fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
         .then((res) => res.json())
         .then((json) => {
-            // displayLesson(json.data);  
-
-            const allData=json.data;
-            
-            displayFilterButtons(allData); //rendaring filter and count button
-            
-            displayLevelWord(allData);   // See starting all card
+            const allData = json.data;
+            if(loader) loader.classList.add("hidden"); 
+            displayFilterButtons(allData);
+            displayLevelWord(allData);
         });
 }
 
-
-
 const loadWordByIdForModal = (id) => {
+    const detailsBox = document.getElementById("details-container");
+    const modal = document.getElementById("my_modal_5");
+
+   
+    detailsBox.innerHTML = `
+        <div class="flex flex-col items-center justify-center py-10">
+            <span class="loading loading-spinner loading-lg text-primary"></span>
+            <p class="mt-4 text-slate-500">Fetching issue details...</p>
+        </div>
+    `;
+    
+    
+    modal.showModal();
+
     const url = `https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`;
     fetch(url)
         .then((res) => res.json())
@@ -30,9 +45,15 @@ const loadWordByIdForModal = (id) => {
             
             displayWordDetails(data.data);
         })
-        .catch(err => console.error("Error loading issue details:", err));
+        .catch(err => {
+            console.error("Error loading issue details:", err);
+            detailsBox.innerHTML = `
+                <div class="text-center py-10">
+                    <p class="text-error font-bold">Failed to load data.</p>
+                    <form method="dialog"><button class="btn btn-sm mt-4">Close</button></form>
+                </div>`;
+        });
 }
-
 
 
 // all remove active class
@@ -106,42 +127,47 @@ const displayFilterButtons = (issues) => {
 }
 
 
-
-
 const filterIssues = (status) => {
-    
     currentStatus = status;
+    const loader = document.getElementById("filter-loader");
+    const wordContainer = document.getElementById("word-container");
+
+    
+    
+    const cards = wordContainer.querySelectorAll('div:not(#filter-loader)');
+    cards.forEach(card => card.remove());
+
+    if(loader) loader.classList.remove("hidden");
 
     fetch("https://phi-lab-server.vercel.app/api/v1/lab/issues")
         .then((res) => res.json())
         .then((json) => {
             const allData = json.data;
-            
-            // 2.data filtering
             const filteredData = status === 'all' 
                 ? allData 
                 : allData.filter(issue => issue.status === status);
 
-            
-            displayFilterButtons(filteredData);
-            displayLevelWord(filteredData);
+            if(loader) loader.classList.add("hidden");
 
-            // 3.Active class handling
-            
-            removeActive();
-            const clickedBtn = document.getElementById(`btn-${status}`);
-            if (clickedBtn) {
-                clickedBtn.classList.add("active");
-                
-                
-                if(status !== 'all') {
-                    clickedBtn.classList.remove("bg-white", "text-gray-600");
-                }
-            }
+            displayFilterButtons(allData); 
+            displayLevelWord(filteredData); 
+            handleActiveButton(status);
         })
-        .catch(err => console.error("Error fetching issues:", err));
+        .catch(err => {
+            console.error("Error:", err);
+            if(loader) loader.classList.add("hidden");
+        });
 }
 
+
+const handleActiveButton = (status) => {
+    removeActive();
+    const clickedBtn = document.getElementById(`btn-${status}`);
+    if (clickedBtn) {
+        clickedBtn.classList.add("active");
+        clickedBtn.classList.remove("bg-white", "text-gray-600");
+    }
+}
 // {
 //   "status": "success",
 //   "message": "Issue fetched successfully",
@@ -178,7 +204,10 @@ const loadLevelWord = (id) => {
 
 const displayLevelWord = (words) => {
     const wordContainer = document.getElementById("word-container");
-    wordContainer.innerHTML = "";
+    
+    
+    const cards = wordContainer.querySelectorAll('div:not(#filter-loader)');
+    cards.forEach(card => card.remove());
 
     // if given object then converted array
     const wordsArray = Array.isArray(words) ? words : [words];
