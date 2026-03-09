@@ -1,6 +1,10 @@
 console.log("Hello github issues");
 
 
+if (localStorage.getItem("isLoggedIn") !== "true") {
+    window.location.href = "login.html";
+}
+
 let currentStatus='all';
 
 
