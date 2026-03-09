@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Github | Tracker | Issue</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+
+       .active {
+
+        
+        background-color: #422ad5 !important; 
+        color: white !important;
+        border: none !important;
+    }
+
+
+
+    </style>
+</head>
+<body class="min-h-screen pb-20">
+
+
+    <div class="flex justify-between bg-white shadow-md mb-[40px]">
+
+    <div class="py-7 text-center flex gap-4  items-center pl-[10px] space-y-4 ">
+        <i class="fa-brands fa-github text-5xl text-slate-800"></i>
+        <h1 class="text-4xl font-bold text-slate-800">Github Tracker Issues</h1>
+        
+    </div>
+
+    <div class="search items-center py-auto mt-[45px]">
+
+        <div class="flex justify-end mb-6 gap-2 ">
+    <input 
+        id="search-input"
+        type="text" 
+        placeholder="Search issues (e.g. notifications)" 
+        class="input input-bordered w-full max-w-xs rounded-xl focus:border-indigo-500"
+    />
+    <button onclick="handleSearch()" class="btn bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl px-6">
+        Search
+    </button>
+</div>
+
+
+    </div>
+
+
+
+
+    </div>
+    
+
+    <main class="container mx-auto px-4 space-y-10">
+        
+        <section class="flex flex-col items-center gap-6">
+            <div id="level-container" class="flex gap-3 flex-wrap justify-center">
+                </div>
+        </section>
+
+        <hr class="border-slate-200">
+
+        <div class="flex items-center gap-4 px-2">
+            <div class="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center text-white shadow-lg shadow-indigo-200">
+                <i class="fa-solid fa-layer-group"></i>
+            </div>
+            <div>
+                <h2 class="text-xl font-bold text-slate-800">Issue Board</h2>
+                <div class="flex gap-4 text-sm font-medium mt-1">
+                    <span class="text-green-600 flex items-center gap-1"><i class="fa-solid fa-circle text-[8px]"></i> Open</span>
+                    <span class="text-purple-600 flex items-center gap-1"><i class="fa-solid fa-circle text-[8px]"></i> Closed</span>
+                </div>
+            </div>
+        </div>
+
+
+
+       
+
+        <div id="word-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center">
+    
+    <div id="filter-loader" class="hidden flex flex-col items-center justify-center py-20 w-full col-span-full">
+        <span class="loading loading-bars loading-lg text-primary"></span>
+        <p class="mt-4 text-slate-500 font-medium">Filtering Issues...</p>
+    </div>
+
+</div>
+
+    </main>
+
+    <div id="loader" class="hidden fixed inset-0 bg-white/60 backdrop-blur-sm flex items-center justify-center z-50">
+        <span class="loading loading-spinner loading-lg text-primary"></span>
+    </div>
+
+
+
+   
+
+
+
+
+  <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
+  <div class="modal-box w-11/12 max-w-2xl bg-white p-8 rounded-2xl">
+    <div id="details-container">
+        </div>
+  </div>
+ </dialog>
+
+
+
+    <script src="./script/index.js"></script>
+</body>
+</html>
