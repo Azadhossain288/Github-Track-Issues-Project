@@ -209,32 +209,28 @@ const loadLevelWord = (id) => {
 const displayLevelWord = (words) => {
     const wordContainer = document.getElementById("word-container");
     
-    
     const cards = wordContainer.querySelectorAll('div:not(#filter-loader)');
     cards.forEach(card => card.remove());
 
-    // if given object then converted array
     const wordsArray = Array.isArray(words) ? words : [words];
 
     wordsArray.forEach((word) => {
         const card = document.createElement("div");
-        card.className = "w-full md:w-80"; // only fixed in card or size measurement
-
+        card.className = "w-full md:w-80 cursor-pointer"; // Added cursor-pointer
 
         const isOpen = word.status === "open";
         const topBorderColor = isOpen ? "border-green-400" : "border-purple-400";
         const iconColor = isOpen ? "text-green-400" : "text-purple-400";
         const iconBg = isOpen ? "bg-green-100" : "bg-purple-100";
 
-
-
-       card.innerHTML = `
-            <div class="bg-white rounded-xl shadow-lg p-6 space-y-4 border-t-8 ${topBorderColor} text-left h-full flex flex-col transition-all hover:scale-105">
+        
+        card.innerHTML = `
+            <div onclick="loadWordByIdForModal('${word.id}')" class="bg-white rounded-xl shadow-lg p-6 space-y-4 border-t-8 ${topBorderColor} text-left h-full flex flex-col transition-all hover:scale-105 active:scale-95">
                 <div class="flex justify-between items-center">
                     <div class="w-8 h-8 ${iconBg} rounded-full flex items-center justify-center">
                         <i class="fa-solid ${isOpen ? 'fa-circle-dot' : 'fa-circle-check'} ${iconColor}"></i>
                     </div>
-                    <span onclick="loadWordByIdForModal(${word.id})"  class="badge ${word.priority === 'high' ? 'badge-error' : 'badge-warning'} badge-sm font-bold uppercase cursor-pointer">
+                    <span class="badge ${word.priority === 'high' ? 'badge-error' : 'badge-warning'} badge-sm font-bold uppercase">
                         ${word.priority}
                     </span>
                 </div>
