@@ -132,8 +132,6 @@ const filterIssues = (status) => {
     const loader = document.getElementById("filter-loader");
     const wordContainer = document.getElementById("word-container");
 
-    
-    
     const cards = wordContainer.querySelectorAll('div:not(#filter-loader)');
     cards.forEach(card => card.remove());
 
@@ -143,13 +141,16 @@ const filterIssues = (status) => {
         .then((res) => res.json())
         .then((json) => {
             const allData = json.data;
+            
             const filteredData = status === 'all' 
                 ? allData 
                 : allData.filter(issue => issue.status === status);
 
             if(loader) loader.classList.add("hidden");
 
-            displayFilterButtons(allData); 
+           
+            displayFilterButtons(filteredData); 
+            
             displayLevelWord(filteredData); 
             handleActiveButton(status);
         })
@@ -158,7 +159,6 @@ const filterIssues = (status) => {
             if(loader) loader.classList.add("hidden");
         });
 }
-
 
 const handleActiveButton = (status) => {
     removeActive();
