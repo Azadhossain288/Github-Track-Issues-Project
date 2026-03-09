@@ -22,10 +22,27 @@ const loadLessons = () => {
 
 
 
+const loadWordByIdForModal = (id) => {
+    const url = `https://phi-lab-server.vercel.app/api/v1/lab/issue/${id}`;
+    fetch(url)
+        .then((res) => res.json())
+        .then((data) => {
+            
+            displayWordDetails(data.data);
+        })
+        .catch(err => console.error("Error loading issue details:", err));
+}
+
+
+
 // all remove active class
 const removeActive = () => {
     const lessonButtons = document.querySelectorAll(".lesson-btn");
-    lessonButtons.forEach((btn) => btn.classList.remove("active"));
+    lessonButtons.forEach((btn) => {
+        btn.classList.remove("active");
+        // back to color 
+        btn.classList.add("bg-white", "text-gray-600");
+    });
 };
 
 
@@ -184,7 +201,7 @@ const displayLevelWord = (words) => {
                     <div class="w-8 h-8 ${iconBg} rounded-full flex items-center justify-center">
                         <i class="fa-solid ${isOpen ? 'fa-circle-dot' : 'fa-circle-check'} ${iconColor}"></i>
                     </div>
-                    <span class="badge ${word.priority === 'high' ? 'badge-error' : 'badge-warning'} badge-sm font-bold uppercase">
+                    <span onclick="loadWordByIdForModal(${word.id})"  class="badge ${word.priority === 'high' ? 'badge-error' : 'badge-warning'} badge-sm font-bold uppercase cursor-pointer">
                         ${word.priority}
                     </span>
                 </div>
@@ -231,12 +248,79 @@ const displayLesson = (lessons) => {
     lessons.forEach(lesson => {
         const btnDiv = document.createElement("div");
         btnDiv.innerHTML = `
-            <button onclick="loadLevelWord('${lesson.id}')" class="btn btn-outline btn-primary">
+            <button onclick="loadLevelWord('${lesson.id}')" class="btn btn-outline btn-primary ">
                 Issue-${lesson.id}
             </button>
         `;
         levelContainer.append(btnDiv);
     });
 }
+
+
+
+
+
+
+const displayWordDetails = (word) => {
+    console.log(word);
+    const detailsBox = document.getElementById("details-container");
+
+    const isOpen = word.status === "open";
+    const statusColor = isOpen ? "bg-green-500" : "bg-purple-500";
+
+    detailsBox.innerHTML = `
+        <div class="space-y-6">
+            <div>
+                <h2 class="font-bold text-3xl text-slate-800 mb-2">${word.title}</h2>
+                <div class="flex items-center gap-3 text-sm text-slate-500">
+                    <span class="${statusColor} text-white px-3 py-1 rounded-full font-bold">
+                        ${isOpen ? 'Opened' : 'Closed'}
+                    </span>
+                    <span>• Opened by <b>${word.author}</b></span>
+                    <span>• ${new Date(word.createdAt).toLocaleDateString()}</span>
+                </div>
+            </div>
+
+            <div class="flex gap-2 border-b pb-4">
+                 ${word.labels.map(label => `
+                    <span class="badge badge-outline text-xs uppercase font-bold py-3 border-red-200 text-red-400 bg-red-50">
+                        <i class="fa-solid fa-bug mr-1"></i> ${label}
+                    </span>
+                `).join('')}
+            </div>
+
+            <div class="py-2">
+                <p class="text-slate-600 leading-relaxed text-lg">
+                    ${word.description}
+                </p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4 bg-slate-50 p-6 rounded-xl border border-blue-50">
+                <div>
+                    <h4 class="text-slate-400 font-bold uppercase text-xs mb-2">Assignee:</h4>
+                    <p class="font-black text-slate-800 text-lg">${word.assignee || 'Unassigned'}</p>
+                </div>
+                <div>
+                    <h4 class="text-slate-400 font-bold uppercase text-xs mb-2">Priority:</h4>
+                    <span class="badge badge-error font-bold uppercase py-3 px-4">${word.priority}</span>
+                </div>
+            </div>
+
+            <div class="modal-action">
+                <form method="dialog">
+                    <button class="btn btn-primary bg-[#422ad5] border-none px-10 text-white font-bold">Close</button>
+                </form>
+            </div>
+        </div>
+    `;
+    
+    
+    document.getElementById("my_modal_5").showModal(); //Hence using DaisyUI
+}
+
+
+
+
+
 
 loadLessons();
