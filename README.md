@@ -1,128 +1,211 @@
-# 🌟 Welcome To (সহজ সরল সিম্পল) Assignment - 5
-
-# **📅 Deadline For 60 marks:** 9th March, 2026 (11:59 pm ⏱️)  
-#  📅 No Deadline For 50 marks  
-# **📅 Deadline For 30 marks:** Any time after 9th March.
-
----
-
-# Assignment-05: GitHub Issues Tracker
+ 1️⃣ What is the difference between var, let, and const?
+ 2️⃣ What is the spread operator (...)?
+ 3️⃣ What is the difference between map(), filter(), and forEach()?
+ 4️⃣ What is an arrow function?
+ 5️⃣ What are template literals?
 
 
-### **API Endpoints:**
-###  **All Issues:** 
-  - https://phi-lab-server.vercel.app/api/v1/lab/issues 
+ Answer:
+
+ 1.What is the difference between var, let, and const?
+ 
+  here:
+     var,let,and const is  variable where,some characteristics of 
+     var:
+
+     *Can be re-declared
+     *Can be re-assigned
+     *Not block scoped
+
+     Example:
+
+     var x=10;
+     var x=20; its allowed
+     x=30; its allowed
+
+     but it has a problem, var ignore block scope
+
+     code:
+
+      if(true){
+
+         var a=5;
+      }
+   
+   console.log(a);// its accessible
 
 
-###  **Single Issue:**
-   - https://phi-lab-server.vercel.app/api/v1/lab/issue/{id}
 
-   - Example: https://phi-lab-server.vercel.app/api/v1/lab/issue/33
+   Again:(let-variable)
 
+   The characteristics of let variable:
 
-###  **Search Issue:** https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q={searchText}
-
-   - Example:  https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=notifications
-
-
----
-
-## 📝 Main Requirements
-
-## 🎨 Design Part
-
-## Login Page
-- Create a login page containing a logo, title, and sub-title
-- Below that, there will be 2 inputs, a sign-in button, and a demo credential to sign in. Follow the Figma for this page 
-- Styled as per Figma
-
-## Main Page: 
-
-### Navbar: 
-
-- Navbar with website logo/name on the left
-- Search input and button on the right
-
-### Tab Section like Figma: 
-
-- 3 tab ( All, Open, Closed) at the top of this section.(**All**, **Open**, **Closed**)
-
-- Below the tab, there will be an icon, the issue count, some text on the left, and an open and closed marker on the right
-
-- Responsiveness: The website should be responsive for mobile devices. It is totally up to you. 
+   *Can be re-assigned
+   *Cannot be re-declared in same scope
+   *Block scoped
 
 
---- 
+   Example:
+
+   code:
+
+   let x=10;
+   x=20; its allowed
+   let x=30; its not allowed
+
+   Block scope:
+
+   if(true){
+
+       let a=5;
+   } 
+
+   console.log(a); its not possible ,and see error  
 
 
-## ⚙️ Functionalities
-- In login page, there will be default admin credentials (username, password). You need to sign in using these credentials.
 
-- Load all issues and display as per Figma
+   Again(const variable):
 
-- On clicking on an open or closed tab, it will load the issues data of the related tab and show it in a display-like card in a 4-column layout like Figma. By default, it will show all data 
+   The characteristics of const variable:
 
-- Each card shows:
-  - Title
-  - Description
-  - Status 
-  - Author
-  - Priority
-  - Label
-  - CreatedAt
-- Clicking on an issue  card will open a modal and show all the information about that Issue. 
+   const variable indicate: fixed value
 
-### 🚀 Challenges
+   *Block scoped
+   *Cannot be re-declared
+   *Cannot be re-assigned
+   *Must be initialized when declared
 
+   Example:
 
-- Show the card Top border based on their category(open, closed), open card will have Green Boder, closed card will have a purple border on top. 
+   code:
 
-- Loading spinner on data load
+    const x=10;
+    x=20; its not possible showing error
 
-- Show active button on changing category names
+    const arr=[1,2];
+    arr.push(3); its allowed
 
-- Implement Search Functionality and 8 meaningful github commit.  
-
-- Create a readme file and answer this question on your own. Don’t copy-paste from Google or any AI chatbot. 
-    - 1️⃣ What is the difference between var, let, and const?
-    - 2️⃣ What is the spread operator (...)?
-    - 3️⃣ What is the difference between map(), filter(), and forEach()?
-    - 4️⃣ What is an arrow function?
-    - 5️⃣ What are template literals?
+    so,we can say that,const value is always fixed ,dont reassign but you can push
 
 
----
-
-## 🛠️ Technology Stack
-
-- **HTML**
-- **CSS** (Vanilla/Tailwind/DaisyUI)
-- **JavaScript** (Vanilla)
-
----
-
-## 🔑 Demo Credentials
-
-```text
-Username: admin
-Password: admin123
-```
 
 
----
-
-### Optional: 
- - No need to show status: Open, Closed styles On modals. 
- - No Need to show icon on labels 
- - No need to apply styles on Priority 
---- 
 
 
-## 📤 What to submit
 
-- **GitHub Repository Link:**
-- **Live Site Link:**
 
----
+    2.What is the spread(...) operator?
 
+    ans:
+
+    The spread operator (...) expands an iterable (like an array or object) into its individual elements. It is primarily used to copy, merge, or pass data into functions without mutating the original source.
+
+    Example:
+
+  ex:1
+
+    const list1 = [1, 2];
+    const list2 = [...list1, 3, 4];//Result: [1, 2, 3, 4]
+
+
+
+    ex:2
+
+    const person = { name: "Abir", age: 25 };
+    const updatedPerson = { ...person, city: "Dhaka" }; // Result: { name: "Abir", age: 25, city: "Dhaka" }
+
+
+
+
+
+
+3.What is the difference between map(), filter(), and forEach()?
+
+
+Ans:
+
+map():
+
+   *Return a new array of the same length
+   *Original array is unchanged
+   *Transforming every item
+
+
+   ex:
+    const numbers = [1, 2, 3];
+    const doubled = numbers.map(num => num * 2); 
+    // doubled: [2, 4, 6]
+
+
+
+
+filter():
+
+    *Return a new array(equal or shorter length).
+    *Original array is unchanged
+    *Selecting specific items based on a condition.
+
+   
+   ex:
+
+     const ages = [15, 22, 18, 30];
+     const adults = ages.filter(age => age >= 18); 
+     // adults: [22, 18, 30]
+
+
+
+
+
+forEach():
+
+
+    *Return undefined
+    *Can be changed
+    *Executing "side effects"
+
+
+    ex:
+
+     const names = ['Alice', 'Bob'];
+     names.forEach(name => console.log(`Hello, ${name}!`));
+     // Output: Hello, Alice! Hello, Bob!
+
+
+
+
+
+
+     4.What is an arrow function?
+
+     Ans:An arrow function is a shorter syntax for writing functions in JavaScript using the => operator instead of the function keyword. Unlike regular functions, they do not have their own this context, making them ideal for callbacks and cleaner code.
+
+
+     Ex:
+
+     // Regular Function
+     const multiply = function(a, b) { return a * b; };
+
+     // Arrow Function (Shorter, cleaner, and uses =>)
+      const multiply = (a, b) => a * b;
+
+
+
+
+
+
+
+
+
+ 5️⃣ What are template literals?
+
+  Ans:Template literals are a modern way to create strings in JavaScript using backticks (``) instead of single or double quotes. They allow you to easily embed variables and expressions directly into a string using the ${} syntax.
+
+
+  Ex:
+
+
+   const name = "Abir";
+   console.log(`Hello, ${name}!`); // Output: Hello, Abir!
+
+  
 
